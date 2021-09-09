@@ -18,7 +18,15 @@ class DemoController extends AbstractController
         ]);
     }
 
-    
+    /**
+     * @Route("/list/{page}", name="demo_list", requirements={"page": "\d+"})
+     */
+    public function list($page)
+    {
+        return $this->render('demo/list.html.twig', [
+            'page' => $page,
+        ]);
+    }
 
     /**
      * @Route("/demo/{title}", name="demo_show")
