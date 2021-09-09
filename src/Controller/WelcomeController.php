@@ -27,4 +27,14 @@ class WelcomeController extends AbstractController
             'lastname' => "Doe"
         ]);
     }
+
+    /**
+     * @Route("/bonjour/{name}", name="hello_name", requirements={"name": "[a-z]{3,8}"})
+     */
+    public function hello_name($name)
+    {
+        return $this->render('welcome/hello_name.html.twig', [
+            'name' => ucfirst($name),
+        ]);
+    }
 }
