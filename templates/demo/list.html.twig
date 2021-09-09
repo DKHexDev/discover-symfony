@@ -1,5 +1,17 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        {{ message }}
+    {% endfor %}
+
     <h1>Nous sommes sur la page {{ page }}</h1>
+
+    {# for en Twig est l'équivalent du foreach en PHP #}
+    <ul>
+    {% for car in cars %}
+        {# {{ car.brand }} équivaut à {{ car['brand'] }} #}
+        <li>{{ car.brand }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
