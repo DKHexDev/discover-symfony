@@ -1,5 +1,7 @@
 {% extends "base.html.twig" %}
 
+{% block title %}{{ parent() }} - Nos voitures{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         {{ message }}
@@ -12,6 +14,18 @@
     {% for car in cars %}
         {# {{ car.brand }} équivaut à {{ car['brand'] }} #}
         <li>{{ car.brand }}</li>
+    {% else %}
+        <li>Aucune voiture.</li>
     {% endfor %}
     </ul>
+
+    {% for i in (1..10) | reverse %}
+        <span style="background-color: {{ cycle(['grey', 'transparent'], i)}}">{{ i }}</span>
+    {% endfor %}
+
+    <br>
+
+    {% for a in 'a'..'z' %}
+        {{ a }}
+    {% endfor %}
 {% endblock %}
