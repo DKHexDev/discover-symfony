@@ -1,11 +1,12 @@
 {% extends "base.html.twig" %}
 
+{% block title %}Liste des produits{% endblock %}
+
 {% block body %}
 
 <table border>
     <thead>
         <th>Nom</th>
-        <th>Slug</th>
         <th>Description</th>
         <th>Prix</th>
     </thead>
@@ -13,7 +14,6 @@
         {% for product in products %}
             <tr>
                 <td>{{ product.name }}</td>
-                <td>{{ product.slug }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.price }} €</td>
             </tr>    

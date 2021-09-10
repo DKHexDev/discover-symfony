@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Product\Product;
+use App\Model\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,9 +38,9 @@ class ProductController extends AbstractController
      */
     public function __construct()
     {
-        array_push(self::$products, new Product('iPhone X', 'iphone-x', 'Un iPhone de 2017', '999'));
-        array_push(self::$products, new Product('iPhone XR', 'iphone-xr', 'Un iPhone de 2018', '1099'));
-        array_push(self::$products, new Product('iPhone XS', 'iphone-xs', 'Un iPhone de 2018', '1119'));
+        array_push(self::$products, new Product('iPhone X', 'Un iPhone de 2017', '999'));
+        array_push(self::$products, new Product('iPhone XR', 'Un iPhone de 2018', '1099'));
+        array_push(self::$products, new Product('iPhone XS', 'Un iPhone de 2018', '1119'));
     }
 
     /**
@@ -55,36 +55,67 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/product/random", name="product_random")
+     */
+    public function productRandom()
+    {
+        // Définition de $product, c'est un produit choisi aléatoirement. 
+        $product = self::$products[array_rand(self::$products)];
+
+        return $this->render('product/product.html.twig', [
+            'product' => $product,
+        ]);
+    }
+
+    /**
+     * @Route("/product/create", name="product_create")
+     */
+    public function productCreate()
+    {
+        // La vue de la création du produit.
+        return $this->render('product/create.html.twig');
+    }
+
+    /**
+     * @Route("/product/{page}", name="product_page", requirements={"page": "\d+"})
+     */
+    public function productPage($page)
+    {
+        // On doit récupérer 2 produits
+        // Si on est sur la page 1, on récupère l'index 0 et 1
+        // Si on est sur la page 2, on récupère l'index 2 et 3
+        // Si on est sur la page 3, on récupère l'index 4 et 5
+        $products = array_chunk(self::$products, 2);
+        /* Le chunk fait la transformation suivante :
+            [
+              0 => ['iphone x', 'iphone xs'],
+              1 => ['iphone xr', 'iphone 11'],
+              2 => ['iphone 12']
+            ]
+        */
+        if (!isset($products[$page - 1])) {
+            throw $this->createNotFoundException("La page $page n'existe pas.");
+        }
+
+        return $this->render('product/index.html.twig', [
+            'products' => $products[$page - 1],
+            'page' => $page,
+        ]);
+    }
+
+    /**
      * @Route("/product/{slug}", name="product_slug")
      */
-    public function product($slug)
+    public function productSlug($slug)
     {
         // On défini oneProduct.
         $oneProduct = null;
 
-        if ($slug === 'create')
+        // Définition de oneProduct, le produit avec le slug mis en paramètre.
+        foreach(self::$products as $product)
         {
-            // La vue de la création du produit.
-            return $this->render('product/create.html.twig');
-        }
-        else if ($slug === 'random')
-        {     
-            // Redéfini oneProduct, avec un produit choisi aléatoirement.    
-            $oneProduct = self::$products[rand(0, count(self::$products) - 1)];
-        }
-        else if (is_numeric($slug))
-        {
-            // Définition de oneProduct, avec le numéro passer en paramètre.
-            $oneProduct = isset(self::$products[$slug]) ? self::$products[$slug] : null;
-        }
-        else
-        {
-            // Définition de oneProduct, le produit avec le slug mis en paramètre.
-            foreach(self::$products as $product)
-            {
-                if ($product->getSlug() === $slug) $oneProduct = $product;
-            };
-        }
+            if ($product->getSlug() === $slug) $oneProduct = $product;
+        };
 
         // On vérifie que oneProduct existe.
         if (!$oneProduct)

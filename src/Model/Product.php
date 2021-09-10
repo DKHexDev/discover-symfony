@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Product;
+namespace App\Model;
 
 class Product {
 
@@ -23,13 +23,18 @@ class Product {
      * @param string $price Prix du produit attendu.
      * @return object
      */
-    public function __construct($name, $slug, $description, $price)
+    public function __construct($name, $description, $price)
     {
         $this->name = $name;
-        $this->slug = $slug;
+        // Génération du slug automatiquement.
+        $this->slug = strtolower(str_replace(' ', '-', $name));
         $this->description = $description;
         $this->price = $price;
     }
+
+
+    // Méthodes
+    // --
 
     /**
      * @return string Retourne le nom du produit.
