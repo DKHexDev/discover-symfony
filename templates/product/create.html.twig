@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+<form method="POST">
+    <div>
+        <label for="name">Nom du produit : </label>
+        <input type="text" name="name" id="name">
+    </div>
+    <div>
+        <label for="slug">Slug : </label>
+        <input type="slug" name="slug" id="slug">
+    </div>
+    <div>
+        <label for="description">Description : </label>
+        <input type="description" name="description" id="description">
+    </div>
+    <div>
+        <label for="price">Prix : </label>
+        <input type="price" name="price" id="price">
+    </div>
+    <div>
+        <button type="submit">Ajouter le produit</button>
+    </div>
+</form>
+
+{% endblock %}
