@@ -43,20 +43,16 @@
 
     <nav aria-label="...">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Précédent</a>
+            <li class="page-item {{ page <= 1 ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ path('product', { page: page - 1 }) }}" tabindex="-1" aria-disabled="true">Précédent</a>
             </li>
+            {% for page in 1..pageNumber %}                
             <li class="page-item">
-                <a class="page-link" href="#">1</a>
+                <a class="page-link" href="{{ path('product', { page: page }) }}">{{ page }}</a>
             </li>
-            <li class="page-item" aria-current="page">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">Suivant</a>
+            {% endfor %}
+            <li class="page-item {{ page >= pageNumber ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ path('product', { page: page + 1 }) }}">Suivant</a>
             </li>
         </ul>
     </nav>

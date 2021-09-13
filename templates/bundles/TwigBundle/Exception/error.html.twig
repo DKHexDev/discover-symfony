@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% block header %}{% endblock %}
+
+    <h1 class="h1 text-center">{{ status_code }}: {{ status_text }}</h1>
+
+    {% block footer %}{% endblock %}
+{% endblock %}

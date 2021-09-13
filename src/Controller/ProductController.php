@@ -44,17 +44,6 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product", name="product")
-     */
-    public function index()
-    {
-        // La vue des produits
-        return $this->render('product/index.html.twig', [
-            'products' => self::$products
-        ]);
-    }
-
-    /**
      * @Route("/product/random", name="product_random")
      */
     public function productRandom()
@@ -77,9 +66,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{page}", name="product_page", requirements={"page": "\d+"})
+     * @Route("/product/{page}", name="product", requirements={"page": "\d+"})
      */
-    public function productPage($page)
+    public function productPage($page = 1)
     {
         // On doit récupérer 2 produits
         // Si on est sur la page 1, on récupère l'index 0 et 1
@@ -100,6 +89,7 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig', [
             'products' => $products[$page - 1],
             'page' => $page,
+            'pageNumber' => count($products),
         ]);
     }
 
