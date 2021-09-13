@@ -1,24 +1,66 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Liste des produits{% endblock %}
+{% block title %}{{ parent() }} - Liste des produits{% endblock %}
 
 {% block body %}
 
-<table border>
-    <thead>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Prix</th>
-    </thead>
-    <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }} €</td>
-            </tr>    
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success my-5" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger my-5" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <h1 class="text-center mt-5 mb-5">Nos produits</h1>
+
+    <table class="table mb-5">
+        <thead class="thead-dark">
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Description</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Actions</th>
+        </thead>
+        <tbody>
+            {% for key, product in products %}
+                <tr>
+                    <th scope="row">{{ key + 1 }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }} €</td>
+                    <td><a class="btn btn-secondary" href="{{ path('product_slug', { slug: product.slug }) }}" role="button">Voir le produit</a></td>
+                </tr>    
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Précédent</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item" aria-current="page">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Suivant</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
 
 {% endblock %}

@@ -50,7 +50,7 @@ class ProductController extends AbstractController
     {
         // La vue des produits
         return $this->render('product/index.html.twig', [
-            'products' => self::$products,
+            'products' => self::$products
         ]);
     }
 
@@ -130,10 +130,36 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/product/order/{slug}", name="product_order")
+     */
+    public function productOrder($slug)
+    {
+        // On défini oneProduct.
+        $oneProduct = null;
+
+        // Définition de oneProduct, le produit avec le slug mis en paramètre.
+        foreach(self::$products as $product)
+        {
+            if ($product->getSlug() === $slug) $oneProduct = $product;
+        };
+
+        // On vérifie que oneProduct existe.
+        if (!$oneProduct)
+        {
+            $this->addFlash('error', 'Un problème est survenue, nous n\'avons pas pû enregistrer votre commande, veuillez réessayer.');
+            return $this->redirectToRoute('product');
+        }
+
+        $this->addFlash('success', 'Nous avons bien pris en compte votre commande '. $oneProduct->getName() .' de '. $oneProduct->getPrice() .' €');
+        return $this->redirectToRoute('product');
+    }
+
+    /**
      * @Route("/product.json", name="product_json")
      */
     public function productJSON()
     {
         return $this->json(['products' => self::$products]);
     }
+
 }
